@@ -1,0 +1,59 @@
+from transformers import AutoTokenizer
+import matplotlib.pyplot as plt
+
+# Number of sentences
+input_sizes = [100, 500, 1000]
+
+# Example datasets
+datasets = {
+    "english": english_sentences,
+    "hindi": hindi_sentences,
+    "bengali": bengali_sentences,
+    "tamil": tamil_sentences,
+    "telugu": telugu_sentences
+}
+
+# Tokenizer paths
+tokenizers = {
+    8000: "tokenizers/vocab_8000",
+    16000: "tokenizers/vocab_16000",
+    32000: "tokenizers/vocab_32000",
+    64000: "tokenizers/vocab_64000"
+}
+
+for vocab_size, path in tokenizers.items():
+
+    tokenizer = AutoTokenizer.from_pretrained(path)
+
+    fig, axes = plt.subplots(2,3,figsize=(15,10))
+    axes = axes.flatten()
+
+    fig.suptitle(f"Mistral Tokenizer Token Generation Analysis\nVocabulary Size = {vocab_size}",
+                 fontsize=15)
+
+    for idx,(language,data) in enumerate(datasets.items()):
+
+        token_counts=[]
+
+        for n in input_sizes:
+
+            text=" ".join(data[:n])
+
+            tokens=tokenizer.encode(text)
+
+            token_counts.append(len(tokens))
+
+        axes[idx].plot(input_sizes,
+                       token_counts,
+                       marker='o')
+
+        axes[idx].set_title(f"{language}: Tokens vs Input Size")
+        axes[idx].set_xlabel("Number of Sentences")
+        axes[idx].set_ylabel("Number of Tokens Generated")
+        axes[idx].grid(True)
+
+    plt.tight_layout()
+
+    plt.savefig(f"mistral_vocab_{vocab_size}.png")
+
+    plt.show()
