@@ -1,0 +1,14 @@
+with open("english.txt","r",encoding="utf-8") as f:
+    english_sentences=f.readlines()
+
+with open("hindi.txt","r",encoding="utf-8") as f:
+    hindi_sentences=f.readlines()
+
+with open("bengali.txt","r",encoding="utf-8") as f:
+    bengali_sentences=f.readlines()
+
+with open("tamil.txt","r",encoding="utf-8") as f:
+    tamil_sentences=f.readlines()
+
+with open("telugu.txt","r",encoding="utf-8") as f:
+    telugu_sentences=f.readlines()
